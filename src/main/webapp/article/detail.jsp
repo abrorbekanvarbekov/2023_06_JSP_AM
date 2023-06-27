@@ -12,9 +12,11 @@
 </head>
 <body>
     <h1><a href="list"><%= (int) article.get("id")%>번 게시글 상세보기</a></h1>
-        <div>id : <%= (int) article.get("id")%></div>
-        <div>작성일 : <%= (LocalDateTime) article.get("regDate")%> </div>
-        <div>제목  : <%= (String) article.get("title")%></div>
-        <div>내용  : <%= (String) article.get("body")%> </div>
+    <div>id : <%= (int) article.get("id")%></div>
+    <div>작성일 : <%= (LocalDateTime) article.get("regDate")%> </div>
+    <div>제목  : <%= (String) article.get("title")%></div>
+    <div>내용  : <%= (String) article.get("body")%> </div>
+
+    <button><a href="doDelete?id=<%= (int) article.get("id")%>">Delete</a></button>
 </body>
 </html>

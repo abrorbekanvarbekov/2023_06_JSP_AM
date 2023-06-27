@@ -10,28 +10,29 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet("/article/list")
-public class ArticleLIstServlet extends HttpServlet {
+@WebServlet(name = "ArticleDeleteServlet", value = "/article/doDelete")
+public class ArticleDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://127.0.0.1:3306/jsp_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
             conn = DriverManager.getConnection(url, "root", "");
 
+            int id = Integer.parseInt(request.getParameter("id"));
+
             SecSql sql = new SecSql();
-            sql.append("SELECT * ");
-            sql.append("FROM article");
-            sql.append("ORDER BY ID DESC");
-            List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
+            sql.append("DELETE FROM");
+            sql.append("article");
+            sql.append("WHERE id = ?", id);
+            DBUtil.delete(conn, sql);
 
-            request.setAttribute("articleListMap", articleListMap);
-            request.getRequestDispatcher("/article/list.jsp").forward(request, response);
-
+            response.getWriter().append(String.format("<script> alert('%d번 게시글이 삭제되었습니다'); location.replace('list');</script>", id));
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패");
@@ -47,5 +48,4 @@ public class ArticleLIstServlet extends HttpServlet {
             }
         }
     }
-
 }
