@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Main Page</h1>
-    <div><a href="article/list">GoTo Article List</a></div>
+    <button style="margin-top: 20px"><a href="article/list">GoTo Article List</a></button>
+<%--    <button style="margin-top: 20px"><a href="article/write">GoTo Article Writer</a></button>--%>
 </body>
 </html>

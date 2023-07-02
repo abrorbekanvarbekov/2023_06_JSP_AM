@@ -12,11 +12,24 @@
 </head>
 <body>
     <h1><a href="list"><%= (int) article.get("id")%>번 게시글 상세보기</a></h1>
-    <div>id : <%= (int) article.get("id")%></div>
-    <div>작성일 : <%= (LocalDateTime) article.get("regDate")%> </div>
-    <div>제목  : <%= (String) article.get("title")%></div>
-    <div>내용  : <%= (String) article.get("body")%> </div>
 
-    <button><a href="doDelete?id=<%= (int) article.get("id")%>">Delete</a></button>
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>regDate</th>
+            <th>Title</th>
+            <th>Body</th>
+        </tr>
+        <tr>
+            <td><%= (int) article.get("id")%></td>
+            <td><%= (LocalDateTime) article.get("regDate")%></td>
+            <td><%= (String) article.get("title")%></td>
+            <td><%= (String) article.get("body")%></td>
+        </tr>
+    </table>
+
+    <button style="margin-top: 20px"><a href="doDelete?id=<%= (int) article.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">Delete</a></button>
+    <button style="margin-top: 20px"><a href="modify?id=<%= (int) article.get("id")%>">Modify</a></button>
+    <button style="margin-top: 20px"><a href="list">List</a></button>
 </body>
 </html>
