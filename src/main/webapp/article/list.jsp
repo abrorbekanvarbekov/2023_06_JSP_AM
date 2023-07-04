@@ -4,8 +4,10 @@
 
 <%
     List<Map<String, Object>> articleListMap = (List<Map<String, Object>>)request.getAttribute("articleListMap");
-    int totalPageCount = (int) request.getAttribute("pageCount");
+    int totalPage = (int) request.getAttribute("totalPage");
     int currentPage = (int) request.getAttribute("page");
+    int from = (int) request.getAttribute("from");
+    int end = (int) request.getAttribute("end");
 %>
 
 <html>
@@ -42,10 +44,18 @@
     </style>
 
     <div class="paging">
-    <%
-        for (int i = 1; i <= totalPageCount; i++) {
-    %>
-                <a class="<%=currentPage == i ? "red" : ""%>" href="list?page=<%=i%>"><%=i%></a>
+        <% if (currentPage > 1) {%>
+            <a href="list?page=1">◀</a>
+        <%}%>
+
+        <%
+            for (int i = from; i <= end; i++) {
+        %>
+            <a class="<%=currentPage == i ? "red" : ""%>" href="list?page=<%=i%>"><%=i%></a>
+        <%}%>
+
+        <% if (currentPage < totalPage) {%>
+            <a href="list?page=<%=totalPage%>">▶</a>
         <%}%>
     </div>
     <button style="margin-top: 20px"><a href="../HomeMainServlet">GoTo Main Page</a></button>

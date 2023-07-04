@@ -24,7 +24,7 @@ public class ArticleLIstServlet extends HttpServlet {
             String url = "jdbc:mysql://127.0.0.1:3306/jsp_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
             conn = DriverManager.getConnection(url, "root", "");
 
-        request.getParameter("page");
+
             int page = 1;
 
             if (request.getParameter("page") != null && request.getParameter("page").length() != 0){
@@ -34,14 +34,23 @@ public class ArticleLIstServlet extends HttpServlet {
             int itemsInPage = 10;
             int limitFrom = (page-1) * itemsInPage;
 
-            SecSql sql_Count = new SecSql();
-            sql_Count.append("SELECT COUNT(*)");
-            sql_Count.append("FROM article");
-            int articleCount = DBUtil.selectRowIntValue(conn, sql_Count);
-            int pageCount = (int) Math.ceil((double) articleCount / itemsInPage);
-
-
             SecSql sql = new SecSql();
+            sql.append("SELECT COUNT(*)");
+            sql.append("FROM article");
+            int articleCount = DBUtil.selectRowIntValue(conn, sql);
+            int totalPage = (int) Math.ceil((double) articleCount / itemsInPage);
+
+            int pageSize = 5;
+
+            int from = page - pageSize;
+            if (from < 1){
+                from = 1;
+            }
+            int end = page + pageSize;
+            if (end > totalPage){
+                end = totalPage;
+            }
+            sql = new SecSql();
             sql.append("SELECT * ");
             sql.append("FROM article");
             sql.append("ORDER BY ID DESC");
@@ -50,8 +59,10 @@ public class ArticleLIstServlet extends HttpServlet {
             List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 
             request.setAttribute("page", page);
-            request.setAttribute("pageCount", pageCount);
+            request.setAttribute("totalPage", totalPage);
             request.setAttribute("articleListMap", articleListMap);
+            request.setAttribute("from", from);
+            request.setAttribute("end", end);
 
             request.getRequestDispatcher("/article/list.jsp").forward(request, response);
 
