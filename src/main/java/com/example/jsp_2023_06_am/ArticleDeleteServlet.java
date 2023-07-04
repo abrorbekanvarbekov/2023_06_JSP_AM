@@ -1,5 +1,6 @@
 package com.example.jsp_2023_06_am;
 
+import com.example.jsp_2023_06_am.config.Config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -20,9 +21,9 @@ public class ArticleDeleteServlet extends HttpServlet {
 
         Connection conn = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://127.0.0.1:3306/jsp_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-            conn = DriverManager.getConnection(url, "root", "");
+            Class.forName(Config.getDBDriverName());
+            String url = Config.getDBUrl();
+            conn = DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPassword());
 
             int id = Integer.parseInt(request.getParameter("id"));
 
