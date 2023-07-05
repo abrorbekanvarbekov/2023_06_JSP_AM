@@ -36,5 +36,6 @@
         <br>
         <button>JOin</button>
     </form>
+    <button><a href="join">MemberJoin</a></button>
 </body>
 </html>

@@ -17,6 +17,16 @@ import java.util.Map;
 public class ArticleModifyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        HttpSession session = request.getSession();
+        int loginedMemberId = -1;
+
+        if(session.getAttribute("loginedMemberId") == null){
+            request.setAttribute("loginedMemberId", loginedMemberId);
+            response.getWriter().append("<script> location.replace('../member/login');</script>");
+            return;
+        }
+
         Connection conn = null;
 
         try {

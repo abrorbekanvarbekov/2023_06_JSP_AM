@@ -49,9 +49,19 @@ public class ArticleLIstServlet extends HttpServlet {
             if (end > totalPage){
                 end = totalPage;
             }
+
+            HttpSession session = request.getSession();
+            int loginedMemberId = -1;
+
+            if(session.getAttribute("loginedMemberId") != null){
+                loginedMemberId = (int) session.getAttribute("loginedMemberId");
+            }
+
             sql = new SecSql();
-            sql.append("SELECT * ");
-            sql.append("FROM article");
+            sql.append("select A.*, M.name");
+            sql.append("from article as A");
+            sql.append("inner join member as M");
+            sql.append("on A.memberId = M.id");
             sql.append("ORDER BY ID DESC");
             sql.append("LIMIT ?, 10;", limitFrom);
 
@@ -62,6 +72,7 @@ public class ArticleLIstServlet extends HttpServlet {
             request.setAttribute("articleListMap", articleListMap);
             request.setAttribute("from", from);
             request.setAttribute("end", end);
+            request.setAttribute("loginedMemberId", loginedMemberId);
 
             request.getRequestDispatcher("/article/list.jsp").forward(request, response);
 

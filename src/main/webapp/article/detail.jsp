@@ -4,6 +4,7 @@
 
 <%
     Map<String, Object> article = (Map<String, Object>) request.getAttribute("articleMap");
+    int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 %>
 
 <html>
@@ -19,17 +20,25 @@
             <th>regDate</th>
             <th>Title</th>
             <th>Body</th>
+            <th>MemberId</th>
         </tr>
         <tr>
             <td><%= (int) article.get("id")%></td>
             <td><%= (LocalDateTime) article.get("regDate")%></td>
             <td><%= (String) article.get("title")%></td>
             <td><%= (String) article.get("body")%></td>
+            <td><%= (String) article.get("memberId")%></td>
         </tr>
     </table>
 
-    <button style="margin-top: 20px"><a href="doDelete?id=<%= (int) article.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">Delete</a></button>
-    <button style="margin-top: 20px"><a href="modify?id=<%= (int) article.get("id")%>">Modify</a></button>
+    <%
+        if (loginedMemberId == Integer.parseInt((String) article.get("memberId"))) {
+    %>
+        <button style="margin-top: 20px"><a href="doDelete?id=<%= (int) article.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">Delete</a></button>
+        <button style="margin-top: 20px"><a href="modify?id=<%= (int) article.get("id")%>">Modify</a></button>
+    <%
+        }
+    %>
     <button style="margin-top: 20px"><a href="list">List</a></button>
 </body>
 </html>

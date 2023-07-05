@@ -8,6 +8,7 @@
     int currentPage = (int) request.getAttribute("page");
     int from = (int) request.getAttribute("from");
     int end = (int) request.getAttribute("end");
+    int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 %>
 
 <html>
@@ -23,6 +24,7 @@
             <th>id</th>
             <th>regDate</th>
             <th>Title</th>
+            <th>MemberId</th>
         </tr>
         <%
             for (Map<String, Object> articleMap : articleListMap) {
@@ -31,6 +33,7 @@
             <td><%= articleMap.get("id")%></td>
             <td><%= articleMap.get("regDate")%></td>
             <td><a href="detail?id=<%=articleMap.get("id")%>"><%= articleMap.get("title")%></a></td>
+            <td><a href=""><%= articleMap.get("memberId")%></a></td>
         </tr>
         <% } %>
     </table>
@@ -58,7 +61,15 @@
             <a href="list?page=<%=totalPage%>">▶</a>
         <%}%>
     </div>
+
     <button style="margin-top: 20px"><a href="../HomeMainServlet">GoTo Main Page</a></button>
-    <button style="margin-top: 20px"><a href="write">GoTo Article Writer</a></button>
+
+    <%
+        if (loginedMemberId != -1){
+    %>
+            <button style="margin-top: 20px"><a href="write">GoTo Article Writer</a></button>
+    <%
+        }
+    %>
 </body>
 </html>

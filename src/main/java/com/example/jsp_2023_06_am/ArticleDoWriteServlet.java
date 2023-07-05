@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import util.DBUtil;
 import util.SecSql;
 
@@ -19,6 +20,14 @@ public class ArticleDoWriteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
+        HttpSession session = request.getSession();
+        int loginedMemberId = -1;
+
+        if(session.getAttribute("loginedMemberId") == null){
+            request.setAttribute("loginedMemberId", loginedMemberId);
+            response.getWriter().append("<script> location.replace('../');</script>");
+            return;
+        }
 
         Connection conn = null;
         try {
@@ -30,12 +39,15 @@ public class ArticleDoWriteServlet extends HttpServlet {
             String title = request.getParameter("title");
             String body = request.getParameter("body");
 
+            int memberId = (int) session.getAttribute("loginedMemberId");
+
             SecSql sql = new SecSql();
             sql.append("INSERT article");
             sql.append("SET regDate = NOW(),");
             sql.append("updateDate = NOW(),");
             sql.append("title = ?", title);
             sql.append(",`body` = ?", body);
+            sql.append(",memberId = ?", memberId);
 
             int id = DBUtil.insert(conn, sql);
 

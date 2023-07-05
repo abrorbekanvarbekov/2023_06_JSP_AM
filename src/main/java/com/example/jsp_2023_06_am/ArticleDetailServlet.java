@@ -26,6 +26,13 @@ public class ArticleDetailServlet extends HttpServlet {
 
             int id = Integer.parseInt(request.getParameter("id"));
 
+            HttpSession session = request.getSession();
+            int loginedMemberId = -1;
+
+            if(session.getAttribute("loginedMemberId") != null){
+                loginedMemberId = (int) session.getAttribute("loginedMemberId");
+            }
+
             SecSql sql = new SecSql();
             sql.append("SELECT * ");
             sql.append("FROM article");
@@ -33,6 +40,7 @@ public class ArticleDetailServlet extends HttpServlet {
             Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
 
             request.setAttribute("articleMap", articleMap);
+            request.setAttribute("loginedMemberId", loginedMemberId);
             request.getRequestDispatcher("/article/detail.jsp").forward(request, response);
 
         } catch (ClassNotFoundException e) {

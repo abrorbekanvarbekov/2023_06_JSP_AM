@@ -51,20 +51,21 @@
     </script>
 
   <h1>회원 가입</h1>
-  <form action="doJoin" method="get" onsubmit="joinFormSubmit(this); return false;">
-      <label for="userId">UserId : </label>
-      <input type="text" name="userId" id="userId">
-      <br>
-      <label for="userPw">UserPw : </label>
-      <input type="password" name="userPw" id="userPw">
-      <br>
-      <label for="userPwChk">pwCheck : </label>
-      <input type="password" name="userPwChk" id="userPwChk">
-      <br>
-      <label for="name">Name : </label>
-      <input type="text" name="name" id="name">
-      <br>
-      <button>JOin</button>
-  </form>
+      <form action="doJoin" method="get" onsubmit="joinFormSubmit(this); return false;">
+          <label for="userId">UserId : </label>
+          <input type="text" name="userId" id="userId">
+          <br>
+          <label for="userPw">UserPw : </label>
+          <input type="password" name="userPw" id="userPw">
+          <br>
+          <label for="userPwChk">pwCheck : </label>
+          <input type="password" name="userPwChk" id="userPwChk">
+          <br>
+          <label for="name">Name : </label>
+          <input type="text" name="name" id="name">
+          <br>
+          <button>JOin</button>
+      </form>
+      <button><a href="login">MemberJoin</a></button>
 </body>
 </html>
