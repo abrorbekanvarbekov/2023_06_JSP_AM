@@ -13,8 +13,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet("/member/doJoin")
-public class MemberPageServlet extends HttpServlet {
+@WebServlet("/member/doLogin")
+public class MemberDoLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -27,20 +27,25 @@ public class MemberPageServlet extends HttpServlet {
 
             String userId = request.getParameter("userId");
             String userPw = request.getParameter("userPw");
-            String name = request.getParameter("name");
 
-
+            System.out.println(userId);
             SecSql sql = new SecSql();
-            sql.append("INSERT member");
-            sql.append("SET regDate = NOW(),");
-            sql.append("updateDate = NOW(),");
-            sql.append("userId = ?", userId);
-            sql.append(",userPw = ?", userPw);
-            sql.append(",`name` = ?", name);
+            sql.append("SELECT * from member");
+            sql.append("WHERE userId = ?", userId);
 
-            DBUtil.insert(conn, sql);
+            Map<String,Object> member = DBUtil.selectRow(conn, sql);
+            System.out.println(member);
+            if (member.isEmpty()){
+                response.getWriter().append(String.format("<script> alert('%s 아이디가 존재한지 않음'); location.replace('login');</script>", userId));
+                return;
+            }
 
-            response.getWriter().append(String.format("<script> alert('%s번 회원이 가입 되었습니다'); location.replace('../');</script>", name));
+            if (member.get("userPw").equals(userPw) == false){
+                response.getWriter().append(String.format("<script> alert('비밀번호가 일치하지 않음'); location.replace('login');</script>"));
+                return;
+            }
+
+            response.getWriter().append(String.format("<script> alert('%s님 환영합니다~'); location.replace('../');</script>", userId));
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패");
@@ -57,8 +62,4 @@ public class MemberPageServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

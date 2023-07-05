@@ -51,7 +51,7 @@
     </script>
 
   <h1>회원 가입</h1>
-  <form action="member/doJoin" method="get" onsubmit="joinFormSubmit(this); return false;">
+  <form action="doJoin" method="get" onsubmit="joinFormSubmit(this); return false;">
       <label for="userId">UserId : </label>
       <input type="text" name="userId" id="userId">
       <br>
