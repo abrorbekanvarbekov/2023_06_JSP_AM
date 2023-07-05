@@ -45,6 +45,9 @@ public class MemberDoLoginServlet extends HttpServlet {
                 return;
             }
 
+            HttpSession session = request.getSession();
+            session.setAttribute("loginedMemberId", member.get("id"));
+
             response.getWriter().append(String.format("<script> alert('%s님 환영합니다~'); location.replace('../');</script>", userId));
 
         } catch (ClassNotFoundException e) {
