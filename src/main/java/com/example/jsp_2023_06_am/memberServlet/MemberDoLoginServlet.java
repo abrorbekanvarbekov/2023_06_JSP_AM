@@ -28,13 +28,12 @@ public class MemberDoLoginServlet extends HttpServlet {
             String userId = request.getParameter("userId");
             String userPw = request.getParameter("userPw");
 
-            System.out.println(userId);
             SecSql sql = new SecSql();
             sql.append("SELECT * from member");
             sql.append("WHERE userId = ?", userId);
 
             Map<String,Object> member = DBUtil.selectRow(conn, sql);
-            System.out.println(member);
+
             if (member.isEmpty()){
                 response.getWriter().append(String.format("<script> alert('%s 아이디가 존재한지 않음'); location.replace('login');</script>", userId));
                 return;

@@ -25,7 +25,7 @@ public class ArticleDoModifyServlet extends HttpServlet {
 
         if(session.getAttribute("loginedMemberId") == null){
             request.setAttribute("loginedMemberId", loginedMemberId);
-            response.getWriter().append("<script> location.replace('../member/login');</script>");
+            response.getWriter().append("<script> alert('로그인 후 이용해주세요!!'); location.replace('../member/login');</script>");
             return;
         }
 

@@ -21,6 +21,7 @@
             <th>Title</th>
             <th>Body</th>
             <th>MemberId</th>
+            <th>Name</th>
         </tr>
         <tr>
             <td><%= (int) article.get("id")%></td>
@@ -28,11 +29,12 @@
             <td><%= (String) article.get("title")%></td>
             <td><%= (String) article.get("body")%></td>
             <td><%= (String) article.get("memberId")%></td>
+            <td><%= (String) article.get("name")%></td>
         </tr>
     </table>
 
     <%
-        if (loginedMemberId == Integer.parseInt((String) article.get("memberId"))) {
+        if (loginedMemberId != -1 && loginedMemberId == Integer.parseInt((String) article.get("memberId"))) {
     %>
         <button style="margin-top: 20px"><a href="doDelete?id=<%= (int) article.get("id")%>" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">Delete</a></button>
         <button style="margin-top: 20px"><a href="modify?id=<%= (int) article.get("id")%>">Modify</a></button>

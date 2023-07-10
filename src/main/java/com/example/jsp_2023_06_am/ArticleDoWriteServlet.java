@@ -21,10 +21,8 @@ public class ArticleDoWriteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         HttpSession session = request.getSession();
-        int loginedMemberId = -1;
 
         if(session.getAttribute("loginedMemberId") == null){
-            request.setAttribute("loginedMemberId", loginedMemberId);
             response.getWriter().append("<script> location.replace('../');</script>");
             return;
         }

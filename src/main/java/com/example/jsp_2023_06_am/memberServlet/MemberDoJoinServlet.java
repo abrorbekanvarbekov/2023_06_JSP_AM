@@ -36,11 +36,10 @@ public class MemberDoJoinServlet extends HttpServlet {
             Map<String, Object> member = DBUtil.selectRow(conn,sql);
 
             if (member.isEmpty() == false){
-                System.out.println("sadasd");
-                response.getWriter().append(String.format("<script> alert('%s가 이미 존내하는 아이디 입니다.'); location.replace('doJoin');</script>", userId));
+                response.getWriter().append(String.format("<script> alert('%s가 이미 존내하는 아이디 입니다.'); location.replace('join');</script>", userId));
                 return;
             }
-            response.getWriter().append(String.format("<script> alert('%s가 이미 존내하는 아이디 입니다.'); location.replace('doJoin');</script>", userId));
+            response.getWriter().append(String.format("<script> alert('%s님 가입 되었습니다.'); location.replace('login');</script>", userId));
             sql = new SecSql();
             sql.append("INSERT member");
             sql.append("SET regDate = NOW(),");

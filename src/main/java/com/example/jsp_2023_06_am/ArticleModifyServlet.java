@@ -13,19 +13,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet(name = "ArticleModifyServlet", value = "/article/modify")
+@WebServlet("/article/modify")
 public class ArticleModifyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
-        HttpSession session = request.getSession();
-        int loginedMemberId = -1;
-
-        if(session.getAttribute("loginedMemberId") == null){
-            request.setAttribute("loginedMemberId", loginedMemberId);
-            response.getWriter().append("<script> location.replace('../member/login');</script>");
-            return;
-        }
 
         Connection conn = null;
 
@@ -41,6 +33,34 @@ public class ArticleModifyServlet extends HttpServlet {
             sql.append("FROM article");
             sql.append("WHERE id = ?", id);
             Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+            if (articleMap.isEmpty()){
+                response.setContentType("text/html; charset=UTF-8");
+                response.getWriter().append(String.format("<script> alert('해당 게시글이 존재하지 않습니다!!'); location.replace('list');</script>"));
+                return;
+            }
+
+            HttpSession session = request.getSession();
+            int loginedMemberId = -1;
+
+            if(session.getAttribute("loginedMemberId") != null){
+                loginedMemberId = (int) session.getAttribute("loginedMemberId");
+            }
+
+            if(loginedMemberId == -1){
+                response.setContentType("text/html; charset=UTF-8");
+                response.getWriter().append("<script> alert('로그인 후 이용해주세요!!'); location.replace('../member/login');</script>");
+                return;
+            }
+
+            System.out.println(loginedMemberId);
+            System.out.println(articleMap.get("memberId"));
+
+            if (Integer.parseInt((String) articleMap.get("memberId")) != loginedMemberId){
+                response.setContentType("text/html; charset=UTF-8");
+                response.getWriter().append(String.format("<script> alert('해당 게시글에 대한 권한이 없습니다!!'); location.replace('detail?id=%d');</script>",id));
+                return;
+            }
 
             request.setAttribute("articleMap", articleMap);
             request.getRequestDispatcher("/article/modify.jsp").forward(request, response);

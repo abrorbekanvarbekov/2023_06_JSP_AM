@@ -21,8 +21,14 @@ public class MemberDoLogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
-
         HttpSession session = request.getSession();
+
+        if(session.getAttribute("loginedMemberId") == null){
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().append("<script> alert('이미 로그아웃 상태입니다.'); location.replace('../');</script>");
+            return;
+        }
+
         session.removeAttribute("loginedMemberId");
         response.getWriter().append(String.format("<script> alert('로그 아웃 되었습니다.'); location.replace('../');</script>"));
     }

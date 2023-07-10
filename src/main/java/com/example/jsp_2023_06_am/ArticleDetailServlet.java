@@ -34,10 +34,18 @@ public class ArticleDetailServlet extends HttpServlet {
             }
 
             SecSql sql = new SecSql();
-            sql.append("SELECT * ");
-            sql.append("FROM article");
-            sql.append("WHERE id = ?", id);
+            sql.append("select A.*, M.name");
+            sql.append("from article as A");
+            sql.append("inner join member as M");
+            sql.append("on A.memberId = M.id");
+            sql.append("where A.id = ?", id);
             Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+            if (articleMap.isEmpty()){
+                response.setContentType("text/html; charset=UTF-8");
+                response.getWriter().append(String.format("<script> alert('해당 게시글이 존재하지 않습니다!!'); location.replace('list');</script>", id));
+                return;
+            }
 
             request.setAttribute("articleMap", articleMap);
             request.setAttribute("loginedMemberId", loginedMemberId);

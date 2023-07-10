@@ -25,6 +25,7 @@
             <th>regDate</th>
             <th>Title</th>
             <th>MemberId</th>
+            <th>Name</th>
         </tr>
         <%
             for (Map<String, Object> articleMap : articleListMap) {
@@ -34,6 +35,7 @@
             <td><%= articleMap.get("regDate")%></td>
             <td><a href="detail?id=<%=articleMap.get("id")%>"><%= articleMap.get("title")%></a></td>
             <td><a href=""><%= articleMap.get("memberId")%></a></td>
+            <td><a href=""><%= articleMap.get("name")%></a></td>
         </tr>
         <% } %>
     </table>
